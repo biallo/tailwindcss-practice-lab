@@ -166,7 +166,7 @@ function App() {
       </aside>
 
       <section className="min-w-0 px-4 py-6 sm:px-6 lg:px-10 lg:py-8">
-        <div className="mx-auto max-w-5xl">
+        <div className="w-full">
           <LessonHeader lesson={activeLesson} />
 
           <div className="mt-6 flex w-full max-w-sm rounded-lg border border-slate-200 bg-white p-1">

@@ -14,18 +14,20 @@ export function CodeBlock({ sample }: { sample: CodeSample }) {
         </span>
       </figcaption>
       <div className="overflow-x-auto">
-        <pre className="min-w-full w-max p-0 text-sm leading-6">
+        <pre className="min-w-full p-0 text-sm leading-6">
           <code>
             {sample.lines.map((line, index) => (
               <span
                 key={`${line.code}-${index}`}
                 className={[
-                  'grid min-w-full grid-cols-[3rem_minmax(max-content,1fr)] gap-x-4 px-4',
+                  'grid min-w-full grid-cols-[3rem_minmax(0,1fr)] gap-x-4 px-4',
                   line.emphasis ? 'bg-sky-400/10' : '',
                 ].join(' ')}
               >
                 <span className="select-none text-right text-slate-600">{index + 1}</span>
-                <span className="whitespace-pre text-slate-100">{highlight(line.code)}</span>
+                <span className="whitespace-pre-wrap break-words text-slate-100">
+                  {highlight(line.code)}
+                </span>
                 {line.note ? (
                   <>
                     <span />

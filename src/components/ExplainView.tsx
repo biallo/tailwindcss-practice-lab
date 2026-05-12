@@ -17,7 +17,7 @@ export function ExplainView({ lesson }: { lesson: Lesson }) {
               <span className="grid size-8 place-items-center rounded-md bg-sky-50 text-sm font-semibold text-sky-700">
                 {index + 1}
               </span>
-              <p className="max-w-3xl text-base leading-8 text-slate-700">{paragraph}</p>
+              <p className="max-w-5xl text-base leading-8 text-slate-700">{paragraph}</p>
             </article>
           ))}
         </div>

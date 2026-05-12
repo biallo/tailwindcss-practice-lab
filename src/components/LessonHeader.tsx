@@ -19,7 +19,7 @@ export function LessonHeader({ lesson }: { lesson: Lesson }) {
       <h1 className="mt-5 text-3xl font-semibold tracking-normal text-slate-950 sm:text-4xl">
         {lesson.title}
       </h1>
-      <p className="mt-3 max-w-3xl text-base leading-7 text-slate-600">
+      <p className="mt-3 max-w-4xl text-base leading-7 text-slate-600">
         {lesson.summary}
       </p>
     </header>
