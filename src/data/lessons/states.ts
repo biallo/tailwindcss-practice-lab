@@ -2,53 +2,66 @@ import type { Lesson } from '../lessonTypes'
 
 export const statesLesson: Lesson = {
   id: 'states',
-  order: '04',
-  title: '状态、伪类与交互',
-  summary: '用 hover、focus-visible、disabled、aria-selected 等状态前缀表达 UI 反馈。',
-  tags: ['状态', '交互', '可访问性'],
+  order: '09',
+  title: '伪类、伪元素与状态变体',
+  summary: '掌握 hover、focus-visible、disabled、first、before、selection 等变体，给交互和结构状态补齐样式。',
+  tags: ['状态', '伪类', '可访问性'],
   explain: [
-    '状态前缀让交互反馈和元素状态放在同一个 className 中，维护时可以直接看到默认、悬停、焦点和禁用状态。',
-    '可点击控件应有 focus-visible 样式。鼠标用户不一定看到焦点环，但键盘用户需要明确知道当前焦点位置。',
-    '当状态来自语义属性时，优先使用 aria-selected、aria-current、disabled 等属性，再用对应变体做样式。',
+    'Tailwind 的状态变体是在工具类前加条件前缀，例如 hover:bg-sky-600、focus-visible:outline-2、disabled:opacity-50。它们的意义是：默认状态仍由普通工具类控制，只有满足条件时才应用带前缀的工具类。',
+    '交互控件不能只写 hover。鼠标用户会看到 hover，但键盘用户依赖 focus-visible 判断当前焦点。disabled、aria-disabled、invalid 也应当有明确视觉反馈，让用户知道控件为什么不能操作或哪里出错。',
+    '结构伪类可以减少额外 CSS。例如 first:pt-0、last:border-b-0、odd:bg-slate-50、empty:hidden。它们适合列表、表格、菜单这类重复结构，避免为了第一个/最后一个元素额外写判断。',
+    '伪元素变体如 before、after、marker、selection 可以处理装饰线、列表标记、选中文本颜色等场景。使用时要注意语义：装饰性内容适合伪元素，真实信息仍然应该放在 DOM 文本中。',
   ],
   samples: [
     {
-      title: 'Tab 按钮状态',
+      title: '按钮交互状态',
       language: 'tsx',
-      caption: '样式跟随 aria-selected，语义和视觉保持一致。',
+      caption: '默认、hover、active、focus-visible、disabled 状态同时表达。',
       lines: [
         { code: '<button' },
         { code: '  type="button"' },
         {
-          code: '  aria-selected={activeTab === "explain"}',
-          note: '屏幕阅读器和 CSS 变体都能读取状态',
-          emphasis: true,
-        },
-        {
-          code: '  className="rounded-md px-3 py-2 text-sm aria-selected:bg-slate-950 aria-selected:text-white focus-visible:outline-2 focus-visible:outline-sky-500"',
-          note: '状态前缀直接组合到工具类前',
+          code: '  className="rounded-md bg-sky-500 px-4 py-2 text-white hover:bg-sky-400 active:bg-sky-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-500 disabled:cursor-not-allowed disabled:opacity-50"',
+          note: '不要只写 hover，键盘焦点和禁用态同样重要',
           emphasis: true,
         },
         { code: '>' },
-        { code: '  讲解' },
+        { code: '  提交' },
         { code: '</button>' },
+      ],
+    },
+    {
+      title: '列表结构状态',
+      language: 'tsx',
+      caption: '使用 first/last/odd 等变体处理重复项边界。',
+      lines: [
+        { code: '<ul className="divide-y divide-slate-200">' },
+        {
+          code: '  <li className="py-3 first:pt-0 last:pb-0 odd:bg-slate-50">',
+          note: '结构状态由 CSS 变体处理，不需要额外判断',
+          emphasis: true,
+        },
+        { code: '    课程条目' },
+        { code: '  </li>' },
+        { code: '</ul>' },
       ],
     },
   ],
   review: [
     {
-      question: '为什么只写 hover 状态是不够的？',
+      question: 'hover:bg-sky-500 和 bg-sky-500 的关系是什么？',
       answer:
-        '键盘用户不会触发 hover，需要 focus-visible 看到当前焦点位置；禁用和选中状态也需要独立表达。',
+        'bg-sky-500 是默认样式，hover:bg-sky-500 只在 hover 条件满足时生效。Tailwind 的状态变体不是覆盖语义类，而是给同一个元素增加条件样式。',
     },
     {
-      question: 'aria-selected 和 aria-current 分别适合什么组件？',
-      answer: 'aria-selected 常用于 Tab、列表框选项这类可选项；aria-current 常用于当前导航页或当前步骤。',
+      question: '为什么 focus-visible 比只写 focus 更适合按钮？',
+      answer:
+        'focus-visible 通常只在键盘等需要可见焦点的场景出现，能避免鼠标点击后出现不必要焦点环，同时保证键盘用户可以定位当前控件。',
     },
     {
-      question: '状态前缀的维护价值是什么？',
+      question: '结构伪类适合解决什么问题？',
       answer:
-        '默认、悬停、焦点、禁用和语义状态都集中在 className 中，阅读组件时能直接看到交互规则。',
+        '适合处理重复结构中的边界和规律样式，例如第一项去掉上边距、最后一项去掉边框、奇偶行背景不同，不需要在渲染逻辑中写额外分支。',
     },
   ],
 }

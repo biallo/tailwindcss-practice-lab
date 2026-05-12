@@ -16,6 +16,7 @@ import {
 type LessonTab = 'explain' | 'review'
 
 function App() {
+  const lessonListRef = useRef<HTMLElement | null>(null)
   const lessonButtonRefs = useRef<Record<string, HTMLButtonElement | null>>({})
   const [activeLessonId, setActiveLessonId] = useState(() => readStoredLessonId(lessons))
   const [activeTab, setActiveTab] = useState<LessonTab>('explain')
@@ -39,7 +40,23 @@ function App() {
   }, [completedLessons])
 
   useEffect(() => {
-    lessonButtonRefs.current[activeLesson.id]?.scrollIntoView({
+    const listElement = lessonListRef.current
+    const buttonElement = lessonButtonRefs.current[activeLesson.id]
+
+    if (!listElement || !buttonElement) {
+      return
+    }
+
+    const listRect = listElement.getBoundingClientRect()
+    const buttonRect = buttonElement.getBoundingClientRect()
+    const isFullyVisible =
+      buttonRect.top >= listRect.top && buttonRect.bottom <= listRect.bottom
+
+    if (isFullyVisible) {
+      return
+    }
+
+    buttonElement.scrollIntoView({
       block: 'center',
       inline: 'nearest',
     })
@@ -57,7 +74,7 @@ function App() {
           <header className="border-b border-slate-200 px-4 py-4 sm:px-5">
             <div className="flex items-center gap-3">
               <img
-                src="./favicons/favicon-32x32.png"
+                src="./icons/favicon-32x32.png"
                 alt=""
                 className="size-8 rounded-md"
               />
@@ -92,6 +109,7 @@ function App() {
           </div>
 
           <nav
+            ref={lessonListRef}
             aria-label="课程列表"
             className="hidden px-5 py-4 lg:block lg:flex-1 lg:space-y-2 lg:overflow-y-auto"
           >
