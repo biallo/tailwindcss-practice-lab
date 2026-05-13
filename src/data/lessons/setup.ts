@@ -10,7 +10,7 @@ export const setupLesson: Lesson = {
     '在 Vite 项目中，Tailwind v4 推荐使用 tailwindcss 和 @tailwindcss/vite。Vite 插件负责把 Tailwind 接入构建流程，CSS 入口负责导入 Tailwind。组件里写的工具类会在构建过程中被识别，最终生成项目实际需要的 CSS。',
     '最小接入通常只有两步：在 vite.config.ts 中加入 tailwindcss() 插件，在 CSS 入口写 @import "tailwindcss";。这比旧项目里手动维护 PostCSS 配置更直接，也更符合 Vite 的插件模型。',
     'Tailwind 会根据源码中出现的类名生成 CSS，所以动态拼接 className 要谨慎。像 `bg-${color}-500` 这种运行时拼出来的完整类名，构建器无法可靠识别。更稳定的写法是列出完整候选类，或通过映射表选择类名。',
-    '部署到 GitHub Pages 时，Vite 的 base 会影响构建后的资源路径。当前项目使用 base: "./"，产物会使用相对路径，适合没有复杂客户端路由的项目页。如果未来引入路由，需要重新评估 base 和刷新路径策略。',
+
   ],
   samples: [
     {
@@ -52,11 +52,6 @@ export const setupLesson: Lesson = {
       question: '为什么不推荐运行时拼接完整 Tailwind 类名？',
       answer:
         '构建器需要在源码中看到完整类名才能生成对应 CSS。运行时拼接的 bg-${color}-500 可能不会出现在构建扫描结果里，导致样式缺失。',
-    },
-    {
-      question: 'base: "./" 对当前 GitHub Pages 项目有什么意义？',
-      answer:
-        '它让构建产物使用相对资源路径，项目部署到 /tailwindcss-practice-lab/ 这类子路径时，JS、CSS、图标资源仍能从当前目录解析。',
     },
   ],
 }
